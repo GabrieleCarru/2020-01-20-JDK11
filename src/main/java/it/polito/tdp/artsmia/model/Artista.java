@@ -57,6 +57,6 @@ public class Artista {
 
 	@Override
 	public String toString() {
-		return "Artista [artist_id=" + artist_id + ", artist_name=" + artist_name + "]";
+		return artist_name;
 	}
 }

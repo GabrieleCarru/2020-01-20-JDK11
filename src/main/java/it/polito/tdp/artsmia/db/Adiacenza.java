@@ -7,15 +7,20 @@ public class Adiacenza implements Comparable<Adiacenza>{
 	private Integer id2;
 	private String nome2;
 	private Integer peso;
+	
 	/**
 	 * @param id1
+	 * @param nome1
 	 * @param id2
+	 * @param 
 	 * @param peso
 	 */
-	public Adiacenza(Integer id1, Integer id2, Integer peso) {
+	public Adiacenza(Integer id1, String nome1, Integer id2, String nome2, Integer peso) {
 		super();
 		this.id1 = id1;
+		this.nome1 = nome1;
 		this.id2 = id2;
+		this.nome2 = nome2;
 		this.peso = peso;
 	}
 	public Integer getId1() {
@@ -73,7 +78,7 @@ public class Adiacenza implements Comparable<Adiacenza>{
 	@Override
 	public String toString() {
 		//return nome1 + " - " + nome2 + " ---> " + peso;
-		return id1 + " - " + id2 + " ---> " + peso;
+		return nome1 + " - " + nome2 + " ---> " + peso;
 	}
 	@Override
 	public int compareTo(Adiacenza o) {

@@ -27,22 +27,26 @@ public class Model {
 		return dao.getAllRole();
 	}
 	
+	public Map<Integer, Artista> getArtistiByRole(String role) {
+		return dao.getArtistiByRole(role);
+	}
+	
 	public void creaGrafo(String role) {
 		// Creo il grafo
 		graph = new SimpleWeightedGraph<Artista, DefaultWeightedEdge>(DefaultWeightedEdge.class);
-		adiacenze = dao.getCollegamentiAndArtisti(role);
 		artisti = dao.getArtistiByRole(role);
+		adiacenze = dao.getCollegamentiAndArtisti(role);
 		
 		for(Adiacenza a : adiacenze) {
 			// Aggiungo vertici
 			if(!graph.containsVertex(artisti.get(a.getId1()))) {
 				graph.addVertex(artisti.get(a.getId1()));
-				a.setNome1(artisti.get(a.getId1()).getArtist_name());
+				//a.setNome1(artisti.get(a.getId1()).getArtist_name());
 			}
 	
 			if(!graph.containsVertex(artisti.get(a.getId2()))) {
 				graph.addVertex(artisti.get(a.getId2()));
-				a.setNome2(artisti.get(a.getId2()).getArtist_name());
+				//a.setNome2(artisti.get(a.getId2()).getArtist_name());
 			}
 				
 			// Aggiungo arco
