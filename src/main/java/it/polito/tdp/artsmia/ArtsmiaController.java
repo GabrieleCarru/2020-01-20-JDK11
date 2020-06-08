@@ -2,9 +2,11 @@ package it.polito.tdp.artsmia;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.artsmia.db.Adiacenza;
+import it.polito.tdp.artsmia.model.Artista;
 import it.polito.tdp.artsmia.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,7 +57,31 @@ public class ArtsmiaController {
     @FXML
     void doCalcolaPercorso(ActionEvent event) {
     	txtResult.clear();
-    	txtResult.appendText("Calcola percorso");
+    	
+    	try {
+    		Integer artistaId = Integer.parseInt(txtArtista.getText());
+
+    		if(!this.model.graphConteinsArtist(artistaId)) {
+    			txtResult.appendText("Inserire un Artista ID valido. \n");
+    			return;
+    		}
+    		
+    		List<Artista> result = this.model.trovaPercorso(artistaId);
+    		
+    		for(Artista a : result) {
+    			txtResult.appendText(a.toString() + "\n");
+    		}
+    		
+    		
+    		
+    		
+    		
+    	} catch (NumberFormatException e) {
+    		e.printStackTrace();
+    		return;
+    	}
+    	
+    	
     }
 
     @FXML

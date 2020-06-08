@@ -1,5 +1,6 @@
 package it.polito.tdp.artsmia.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ public class Model {
 	private Graph<Artista, DefaultWeightedEdge> graph;
 	private List<Adiacenza> adiacenze;
 	private Map<Integer, Artista> artisti;
+	private List<Artista> best;
 	
 	public Model() {
 		dao = new ArtsmiaDAO();
@@ -57,6 +59,40 @@ public class Model {
 		}
 	}
 	
+	public List<Artista> trovaPercorso(Integer artistaID) {
+		List<Artista> parziale = new ArrayList<>();
+		this.best = new ArrayList<>();
+		parziale.add(artisti.get(artistaID));
+		trovaRicorsivo(parziale, -1);
+		return this.best;
+	}
+	
+	private void trovaRicorsivo(List<Artista> parziale, int peso) {
+		
+		Artista ultimo = parziale.get(parziale.size()-1);
+		
+		// Ottengo i vicini
+		List<Artista> vicini = Graphs.neighborListOf(this.graph, ultimo);
+		for(Artista vicino : vicini) {
+			if(!parziale.contains(vicino) && peso == -1) {
+				parziale.add(vicino);
+				trovaRicorsivo(parziale, (int) this.graph.getEdgeWeight(this.graph.getEdge(ultimo, vicino)));
+				parziale.remove(vicino);
+			} else {
+				if(!parziale.contains(vicino) && (this.graph.getEdgeWeight(this.graph.getEdge(ultimo, vicino)) == peso)) {
+					parziale.add(vicino);
+					trovaRicorsivo(parziale, peso);
+					parziale.remove(vicino);
+				}
+			}
+		}
+		
+		if(parziale.size() > best.size()) {
+			this.best = new ArrayList<>(parziale);
+		}
+		
+	}
+
 	public List<Adiacenza> getAdiacenze() {
 		Collections.sort(this.adiacenze);
 		return this.adiacenze;
@@ -68,5 +104,12 @@ public class Model {
 	
 	public int getNumberEdges() {
 		return this.graph.edgeSet().size();
+	}
+	
+	public boolean graphConteinsArtist(Integer artistaID) {
+		if(this.graph.containsVertex(artisti.get(artistaID))) {
+			return true;
+		}
+		return false;
 	}	
 }
